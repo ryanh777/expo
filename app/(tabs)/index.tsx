@@ -29,7 +29,7 @@ export default function App() {
 
   const barCodeScanned = (scanningResult: BarcodeScanningResult) => {
     console.log(scanningResult)
-    router.navigate({ pathname: '/modal', params: {something: scanningResult.data} })
+    router.navigate({ pathname: '/modal', params: {barcode: scanningResult.data} })
   }
 
   return (

@@ -8,10 +8,10 @@ export default function Items() {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	useEffect(() => {
-		loadBarcode()
+		loadBarcodes()
 	}, [])
 
-	async function loadBarcode() {
+	async function loadBarcodes() {
 		setLoading(true);
 		const { data, error } = await supabase
 		.from('Items')
@@ -23,11 +23,11 @@ export default function Items() {
 		setLoading(false);
 	}
 
-	const barcodesComp = () => barcodes?.map(barcodeObj => <Text key={barcodeObj.id}>{barcodeObj.barcode}</Text>);
+	const BarcodesComp = () => barcodes?.map(barcodeObj => <Text key={barcodeObj.id}>{barcodeObj.barcode}</Text>);
 
 	return (
 		<View style={styles.container}>
-			{loading ? <Text>loading</Text> : barcodesComp()}
+			{loading ? <Text>loading</Text> : BarcodesComp()}
 		</View>
 	)
 }
