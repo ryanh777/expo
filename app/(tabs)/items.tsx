@@ -1,7 +1,8 @@
 import { supabase } from "@/utils/supabase";
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
 import { Tables } from "../../database.types";
+import Swatch from "@/components/Swatch";
 
 export default function Items() {
 	const [barcodes, setBarcodes] = useState<Tables<'Items'>[]>();
@@ -17,27 +18,34 @@ export default function Items() {
 		.from('Items')
 		.select()
 
-		await sleep(1000);
+		// await sleep(1000);
 
 		if (data) setBarcodes(data)
 		setLoading(false);
 	}
 
-	const BarcodesComp = () => barcodes?.map(barcodeObj => <Text key={barcodeObj.id}>{barcodeObj.barcode}</Text>);
-
 	return (
-		<View style={styles.container}>
-			{loading ? <Text>loading</Text> : BarcodesComp()}
-		</View>
+		<SafeAreaView style={styles.container}>
+			<ScrollView contentContainerStyle={styles.scrollView}>
+				{loading ? 
+					<Text>loading</Text> 
+						:
+					barcodes?.map(barcodeObj => <Swatch key={barcodeObj.id} barcode={barcodeObj.barcode}/>)
+				}
+			</ScrollView>
+		</SafeAreaView>
 	)
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white'
+	container: {
+		flex: 1
+	},
+  scrollView: {
+		width: '100%',
+		flexWrap: 'wrap',
+		flexDirection: 'row',
+		padding: '1%'
   },
 });
 

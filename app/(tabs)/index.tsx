@@ -1,7 +1,7 @@
 import { CameraView, CameraType, useCameraPermissions, BarcodeScanningResult } from 'expo-camera';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -33,7 +33,7 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <CameraView style={styles.camera} facing={facing} onBarcodeScanned={barCodeScanned}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
@@ -41,7 +41,7 @@ export default function App() {
           </TouchableOpacity>
         </View>
       </CameraView>
-    </View>
+    </SafeAreaView>
   );
 }
 
