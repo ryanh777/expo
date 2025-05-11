@@ -29,6 +29,8 @@ export default function Modal() {
 
 const styles = StyleSheet.create({
   container: {
+    width: '80%',
+    height: '80%',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
