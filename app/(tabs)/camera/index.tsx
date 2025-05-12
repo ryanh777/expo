@@ -1,12 +1,15 @@
-import { CameraView, CameraType, useCameraPermissions, BarcodeScanningResult } from 'expo-camera';
-import { useRouter } from 'expo-router';
-import { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
+import { CameraView, useCameraPermissions, BarcodeScanningResult } from 'expo-camera';
+import { usePathname, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Button, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 
 export default function App() {
-  const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
+  const [isFocused, setIsFocused] = useState<boolean>(true);
   const router = useRouter();
+  const path = usePathname()
+
+  useEffect(() => path === '/camera' ? setIsFocused(true) : setIsFocused(false), [path])
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -23,25 +26,15 @@ export default function App() {
     );
   }
 
-  function toggleCameraFacing() {
-    // setFacing(current => (current === 'back' ? 'front' : 'back'));
-    router.navigate({ pathname: '/camera/modal', params: {barcode: 12345} })
-  }
-
   const barCodeScanned = (scanningResult: BarcodeScanningResult) => {
-    console.log(scanningResult)
-    router.navigate({ pathname: '/camera/modal', params: {barcode: scanningResult.data} })
+    if (isFocused) {
+      router.navigate({ pathname: '/camera/modal', params: {barcode: scanningResult.data} })
+    }
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <CameraView style={styles.camera} facing={facing} onBarcodeScanned={barCodeScanned}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView>
+      <CameraView style={styles.camera} onBarcodeScanned={barCodeScanned} />
     </SafeAreaView>
   );
 }
@@ -57,21 +50,5 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
-  },
-  button: {
-    flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
   },
 });
