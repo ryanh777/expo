@@ -1,29 +1,30 @@
 import { supabase } from "@/utils/supabase";
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
+import { Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
 import { Tables } from "../../database.types";
 import Swatch from "@/components/Swatch";
+import { usePathname } from "expo-router";
 
 export default function Items() {
 	const [barcodes, setBarcodes] = useState<Tables<'Items'>[]>();
 	const [loading, setLoading] = useState<boolean>(false);
+	const path = usePathname();
 
 	useEffect(() => {
-		loadBarcodes()
-	}, [])
+		if (path === '/') {
+			loadBarcodes()
+		}
+	}, [path])
 
 	async function loadBarcodes() {
 		setLoading(true);
-		console.log("trying to load from supabase")
 		const { data, error } = await supabase
 			.from('Items')
 			.select()
 
 		// await sleep(1000);
-		console.log("we got data back? " + data)
 
 		if (data) setBarcodes(data)
-		// console.log("we got data back? " + data)
 		setLoading(false);
 	}
 

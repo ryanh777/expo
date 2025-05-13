@@ -3,7 +3,7 @@ import { usePathname, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 
-export default function App() {
+export default function Scan() {
   const [permission, requestPermission] = useCameraPermissions();
   const [isFocused, setIsFocused] = useState<boolean>(true);
   const router = useRouter();
@@ -34,7 +34,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <CameraView style={styles.camera} onBarcodeScanned={barCodeScanned} />
+        <CameraView style={styles.camera} onBarcodeScanned={barCodeScanned} />
     </SafeAreaView>
   );
 }
